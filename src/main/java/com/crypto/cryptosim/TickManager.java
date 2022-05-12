@@ -6,11 +6,13 @@ import java.sql.SQLException;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.time.LocalDate;
+import java.time.Period;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.GregorianCalendar;
 import java.util.Locale;
+import java.time.temporal.*;
 
 /**
  * Cette classe permet de gérer l'action du temps
@@ -64,6 +66,8 @@ public class TickManager {
             stmt.setInt(3, c.getValue());
             stmt.execute();
         }
+
+        date = date.plus(tick);
     }
 
     private static LocalDate fromString(String str){
@@ -73,7 +77,7 @@ public class TickManager {
         return date;
     }
 
-    public static int tickMS = 1000*60*60*24; // Un jour
+    public static TemporalAmount tick = Period.ofDays(1);
     private LocalDate date = null;
 
     public LocalDate getDate() {

@@ -4,8 +4,10 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import java.sql.SQLException;
+import java.time.LocalDate;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotEquals;
 
 public class CryptoValueTest {
     private DatabaseManager dm;
@@ -42,4 +44,20 @@ public class CryptoValueTest {
         tm.nextTick();
         assertEquals(false, cr.isNewCrypto(c));
     }
+
+    @Test
+    void testDate() throws Exception {
+
+        ValuableCrypto c = new ValuableCrypto();
+        c.setName("BTC");
+        cr.add((Crypto)c);
+        c.initValue(1000);
+
+        LocalDate date1 = tm.getDate();
+        tm.nextTick();
+        LocalDate date2 = tm.getDate();
+
+        assertNotEquals(date1.toString(), date2.toString());
+    }
+
 }
