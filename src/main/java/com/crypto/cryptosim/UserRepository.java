@@ -7,13 +7,9 @@ import java.util.ArrayList;
  * Un Repository, en quelques sortes, permet
  * de définir une entité matérialisée par une table SQL
  */
-public class UserRepository {
+public class UserRepository extends AbstractRepository<User>{
     private static UserRepository instance = null;
 
-    // A factoriser
-    private Connection getConnection(){
-        return DatabaseManager.getInstance().getConnection();
-    }
 
     // A factoriser
     public void buildSQLTable() throws SQLException {
@@ -28,6 +24,7 @@ public class UserRepository {
         stmt.execute(sql);
     }
 
+    // TODO: factoriser
     private User getUserFromResultSet(ResultSet rs) throws SQLException {
         User u = new User();
         u.setId(rs.getInt("user_id"));
@@ -51,17 +48,13 @@ public class UserRepository {
         u.setId(auto_id);
     }
 
-    public ArrayList<User> getAll(){
+    public ArrayList<User> getAll() throws SQLException {
         PreparedStatement stmt = null;
         ArrayList<User> output = new ArrayList<>();
-        try {
-            stmt = getConnection().prepareStatement("SELECT * from \"user\"");
-            ResultSet rs = stmt.executeQuery();
-            while(rs.next()){
-                output.add(getUserFromResultSet(rs));
-            }
-        } catch (SQLException e) {
-            e.printStackTrace();
+        stmt = getConnection().prepareStatement("SELECT * from \"user\"");
+        ResultSet rs = stmt.executeQuery();
+        while(rs.next()){
+            output.add(getUserFromResultSet(rs));
         }
         return output;
     }
