@@ -47,4 +47,25 @@ class UserTests {
         ArrayList<User> users = ur.getAll();
         assertEquals(2, users.size());
     }
+
+    @Test
+    void verifyCredentials() throws SQLException {
+        User u1 = new User();
+        u1.setEmail("john@gmail.com");
+        u1.setPassword("password");
+        ur.add(u1);
+        User u = new User();
+
+        u.setEmail("john@gmail.com");
+        u.setPassword("pass");
+        assertEquals(false, ur.verifyCredentials(u));
+
+        u.setEmail("john@gmail.co");
+        u.setPassword("password");
+        assertEquals(false, ur.verifyCredentials(u));
+
+        u.setEmail("john@gmail.com");
+        u.setPassword("password");
+        assertEquals(true, ur.verifyCredentials(u));
+    }
 }

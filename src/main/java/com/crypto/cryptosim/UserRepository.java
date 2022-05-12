@@ -66,6 +66,14 @@ public class UserRepository {
         return output;
     }
 
+    public boolean verifyCredentials(User u) throws SQLException {
+        PreparedStatement stmt = getConnection().prepareStatement("SELECT * FROM \"user\" WHERE user_email=? AND user_password=?");
+        stmt.setString(1, u.getEmail());
+        stmt.setString(2, u.getPassword());
+        ResultSet rs = stmt.executeQuery();
+        return rs.next();
+    }
+
     public static UserRepository getInstance(){
         if(instance == null)
             instance = new UserRepository();
