@@ -18,12 +18,24 @@ public class CryptoRepository extends AbstractRepository{
 
     @Override
     public void buildSQLTable() throws SQLException {
-        String sql = "DROP TABLE IF EXISTS \"crypto\";\n" +
+        String sql = "DROP TABLE IF EXISTS \"price\";\n" +
+                "DROP TABLE IF EXISTS \"crypto\";\n" +
+                "" +
+                "" +
                 "CREATE TABLE \"crypto\" (\n" +
                 "    crypto_id serial PRIMARY KEY,\n" +
                 "    crypto_name varchar(255),\n" +
                 "    crypto_slug varchar(255),\n" +
-                "    crypto_desc text\n" +
+                "    crypto_desc text,\n" +
+                "    crypto_seed INT\n" +
+                ");" +
+                "" +
+                "" +
+                "CREATE TABLE \"price\" (\n" +
+                "    price_crypto INT,\n" +
+                "    price_date DATE NOT NULL,\n" +
+                "    price_value INT,\n" +
+                "    CONSTRAINT fk_crypto FOREIGN KEY (price_crypto) REFERENCES crypto(crypto_id)\n" +
                 ");";
         Statement stmt = getConnection().createStatement();
         stmt.execute(sql);
@@ -67,6 +79,16 @@ public class CryptoRepository extends AbstractRepository{
             output.add(getFromResultSet(rs));
         }
         return output;
+    }
+
+    public boolean isNewCrypto(ValuableCrypto c) throws Exception {
+        if(c.getId() == 0) {
+            throw new Exception("Crypto should be a stored inside database");
+        }
+        PreparedStatement stmt = getConnection().prepareStatement("SELECT * FROM \"price\" WHERE price_crypto=?");
+        stmt.setInt(1, c.getId());
+        ResultSet rs = stmt.executeQuery();
+        return !rs.next();
     }
 
 }

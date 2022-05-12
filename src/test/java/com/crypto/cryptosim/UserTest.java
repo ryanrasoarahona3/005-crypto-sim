@@ -9,7 +9,7 @@ import java.util.ArrayList;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-class UserTests {
+class UserTest {
     private DatabaseManager dm;
     private UserRepository ur;
 
