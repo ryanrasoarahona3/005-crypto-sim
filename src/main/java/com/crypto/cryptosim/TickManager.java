@@ -66,6 +66,7 @@ public class TickManager {
             stmt.setInt(3, c.getValue());
             stmt.execute();
 
+            /*
             if(c.getSeed() == -1){
                 // Il s'agit d'un crypto nouvellement créé
                 int seed = SemiRandomPriceManager.getInstance().requestForSeed();
@@ -76,6 +77,7 @@ public class TickManager {
                 stmt.setInt(2, c.getId());
                 stmt.execute();
             }
+            */
         }
 
         /**

@@ -16,6 +16,10 @@ public class ValuableCrypto extends Crypto{
         return value;
     }
 
+    public void setValue(int value) {
+        this.value = value;
+    }
+
     /**
      * Cette fonction ne peut être appelé qu'une seule fois lors de la création du crypto
      * Sinon, une erreur sera levée
@@ -36,6 +40,6 @@ public class ValuableCrypto extends Crypto{
          *
          * TickManager.register() se chargera d'attribuer une graine au Crypto
          */
-        (TickManager.getInstance()).register(this);
+        //(TickManager.getInstance()).register(this);
     }
 }

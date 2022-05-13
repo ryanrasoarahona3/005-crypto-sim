@@ -52,7 +52,8 @@ public class SemiRandomPriceManager {
             URL resource = getClass().getClassLoader().getResource("stocks-random.txt");
             File f = new File(resource.toURI());
             seedData = tsvr(f);
-            System.out.println("OK");
+
+            syncUsedSeed();
         } catch (URISyntaxException e) {
             e.printStackTrace();
         }

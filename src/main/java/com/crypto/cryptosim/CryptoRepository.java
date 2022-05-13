@@ -6,6 +6,12 @@ import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
 
+/**
+ *
+ * Pour la suite du projet, CryptoRepository est désormais remplacé par MarketManager
+ * Qui est plus adapté à la classe ValuableCrypto
+ * @deprecated
+ */
 public class CryptoRepository extends AbstractRepository{
 
     private static CryptoRepository instance = null;
