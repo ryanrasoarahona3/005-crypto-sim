@@ -115,7 +115,7 @@ public class MarketManager extends AbstractRepository{
                 "    SELECT price_crypto, max(price_date) as MaxDate FROM price group by price_crypto\n" +
                 ") tm ON crypto_id = tm.price_crypto\n" +
                 "         INNER JOIN price ON crypto_id = price.price_crypto\n" +
-                "WHERE crypto_name=?;";
+                "WHERE crypto_name=? AND tm.MaxDate = price.price_date;";
         PreparedStatement stmt = null;
         stmt = getConnection().prepareStatement(sql);
         stmt.setString(1, name);

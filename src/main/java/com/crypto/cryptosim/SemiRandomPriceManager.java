@@ -10,6 +10,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
+import java.util.Random;
 import java.util.concurrent.ThreadLocalRandom;
 
 public class SemiRandomPriceManager {
@@ -92,5 +93,20 @@ public class SemiRandomPriceManager {
         }else{
             return -1;
         }
+    }
+
+    public void updateCryptoPrice(ValuableCrypto c, int newCursor){
+        int seed = c.getSeed();
+
+        Random r = new Random();
+        double randomNoise = 0.9 + (1.1 - 0.9) * r.nextDouble();
+
+        Double newVal = (seedData.get(seed).get(newCursor) / seedData.get(seed).get(newCursor-1)) * c.getValue() * randomNoise;
+
+        c.setValue((int) Math.round(newVal));
+    }
+
+    public void incrementCryptoPrice(ValuableCrypto c){
+
     }
 }

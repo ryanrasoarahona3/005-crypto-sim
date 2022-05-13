@@ -51,13 +51,23 @@ public class TickManager {
 
 
     public void nextTick() throws SQLException {
+
+        date = date.plus(tick);
         /**
          * Doit être modifié pour prendre en compte tous les autres cryptos
          * déjà sur le marché
          */
         for(int i = 0; i < observers.size(); i++){
             ValuableCrypto c = observers.get(i);
-            incrementCryptoCursor(c);
+            int newCursor = incrementCryptoCursor(c); // newCursor = c.cursor + 1
+            SemiRandomPriceManager.getInstance().updateCryptoPrice(c, newCursor);
+
+            // Register new price to database
+            PreparedStatement stmt = getConnection().prepareStatement("INSERT INTO \"price\" (price_crypto, price_date, price_value) VALUES (?, ?, ?);");
+            stmt.setInt(1, c.getId());
+            stmt.setDate(2, java.sql.Date.valueOf(date));
+            stmt.setInt(3, c.getValue());
+            stmt.execute();
         }
 
         /*
@@ -91,7 +101,6 @@ public class TickManager {
          * Si une nouvelle graine a été ajouté, on met la table à jour
          */
 
-        date = date.plus(tick);
     }
 
     private static LocalDate fromString(String str){
@@ -141,12 +150,13 @@ public class TickManager {
      * Pour l'intégrité de l'algorithme, seul tick manager permet de gérer
      * La propriété seed_cursor
      */
-    private void incrementCryptoCursor(ValuableCrypto c) throws SQLException {
+    private int incrementCryptoCursor(ValuableCrypto c) throws SQLException {
         int cursor = getSeedCryptoCursor(c);
         cursor+= 1;
         PreparedStatement stmt = getConnection().prepareStatement("UPDATE \"crypto\" SET crypto_seed_cursor=? WHERE crypto_id=?");
         stmt.setInt(1, cursor);
         stmt.setInt(2, c.getId());
         stmt.execute();
+        return cursor;
     }
 }
