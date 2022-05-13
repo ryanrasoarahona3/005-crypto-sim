@@ -5,6 +5,7 @@ public class Crypto {
     private String name;
     private String slug;
     private String description;
+    private int seed = -1;
 
     public int getId() {
         return id;
@@ -36,5 +37,13 @@ public class Crypto {
 
     public void setDescription(String description) {
         this.description = description;
+    }
+
+    public int getSeed() {
+        return seed;
+    }
+
+    public void setSeed(int seed) {
+        this.seed = seed;
     }
 }

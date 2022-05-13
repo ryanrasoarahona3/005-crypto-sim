@@ -65,7 +65,22 @@ public class TickManager {
             stmt.setDate(2, java.sql.Date.valueOf(date));
             stmt.setInt(3, c.getValue());
             stmt.execute();
+
+            if(c.getSeed() == -1){
+                // Il s'agit d'un crypto nouvellement créé
+                int seed = SemiRandomPriceManager.getInstance().requestForSeed();
+                c.setSeed(seed);
+                // On met la table SQL à jour
+                stmt = getConnection().prepareStatement("UPDATE \"crypto\" SET crypto_seed=? WHERE crypto_id=?");
+                stmt.setInt(1, c.getSeed());
+                stmt.setInt(2, c.getId());
+                stmt.execute();
+            }
         }
+
+        /**
+         * Si une nouvelle graine a été ajouté, on met la table à jour
+         */
 
         date = date.plus(tick);
     }

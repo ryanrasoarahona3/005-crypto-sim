@@ -29,6 +29,13 @@ public class ValuableCrypto extends Crypto{
          * TickManager
          */
         this.value = initialValue;
+
+        /**
+         * De même, l'octroi d'une graine (pour la génération aléatoire) se fait lors de
+         * l'initialisation de la valeur du crypto
+         *
+         * TickManager.register() se chargera d'attribuer une graine au Crypto
+         */
         (TickManager.getInstance()).register(this);
     }
 }

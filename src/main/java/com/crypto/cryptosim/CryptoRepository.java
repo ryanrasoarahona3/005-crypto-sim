@@ -27,7 +27,7 @@ public class CryptoRepository extends AbstractRepository{
                 "    crypto_name varchar(255),\n" +
                 "    crypto_slug varchar(255),\n" +
                 "    crypto_desc text,\n" +
-                "    crypto_seed INT\n" +
+                "    crypto_seed INT UNIQUE\n" +
                 ");" +
                 "" +
                 "" +

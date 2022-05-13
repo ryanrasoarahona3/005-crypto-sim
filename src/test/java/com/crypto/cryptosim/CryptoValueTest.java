@@ -60,4 +60,17 @@ public class CryptoValueTest {
         assertNotEquals(date1.toString(), date2.toString());
     }
 
+
+    @Test
+    void testSeed() throws SQLException {
+        ValuableCrypto c = new ValuableCrypto();
+        c.setName("ETH");
+        cr.add((Crypto)c);
+        c.initValue(1000);
+
+        tm.nextTick();
+
+        // Seed est utilisé pour
+        assertNotEquals(-1, (Integer)c.getSeed());
+    }
 }
