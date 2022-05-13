@@ -67,4 +67,15 @@ public class MarketTest {
         assertEquals(0, cursor);
     }
 
+    @Test
+    void cryptoCursorIncrementation() throws SQLException {
+        ValuableCrypto c = new ValuableCrypto();
+        c.setName("BTC");
+        c.initValue(1000);
+        mm.add(c);
+
+        tm.nextTick();
+        assertEquals(1, tm.getSeedCryptoCursor(c));
+    }
+
 }

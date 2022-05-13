@@ -55,6 +55,12 @@ public class TickManager {
          * Doit être modifié pour prendre en compte tous les autres cryptos
          * déjà sur le marché
          */
+        for(int i = 0; i < observers.size(); i++){
+            ValuableCrypto c = observers.get(i);
+            incrementCryptoCursor(c);
+        }
+
+        /*
         for(int i = 0; i < toBeUpdated.size(); i++){
             ValuableCrypto c = toBeUpdated.get(i);
             PreparedStatement stmt = getConnection().prepareStatement("INSERT INTO \"price\" (price_crypto, price_date, price_value) VALUES (?, ?, ?)");
@@ -62,6 +68,8 @@ public class TickManager {
             stmt.setDate(2, java.sql.Date.valueOf(date));
             stmt.setInt(3, c.getValue());
             stmt.execute();
+
+         */
 
             /*
             if(c.getSeed() == -1){
@@ -75,7 +83,9 @@ public class TickManager {
                 stmt.execute();
             }
             */
+        /*
         }
+         */
 
         /**
          * Si une nouvelle graine a été ajouté, on met la table à jour
@@ -93,7 +103,7 @@ public class TickManager {
 
     public static TemporalAmount tick = Period.ofDays(1);
     private LocalDate date = null;
-    private ArrayList<ValuableCrypto> observers;
+    private ArrayList<ValuableCrypto> observers = new ArrayList<>();
 
     public LocalDate getDate() {
         return date;
@@ -124,5 +134,19 @@ public class TickManager {
         if(!rs.next())
             return -1;
         return rs.getInt("crypto_seed_cursor");
+    }
+
+    /**
+     * Incrémenter la valeur du curseur
+     * Pour l'intégrité de l'algorithme, seul tick manager permet de gérer
+     * La propriété seed_cursor
+     */
+    private void incrementCryptoCursor(ValuableCrypto c) throws SQLException {
+        int cursor = getSeedCryptoCursor(c);
+        cursor+= 1;
+        PreparedStatement stmt = getConnection().prepareStatement("UPDATE \"crypto\" SET crypto_seed_cursor=? WHERE crypto_id=?");
+        stmt.setInt(1, cursor);
+        stmt.setInt(2, c.getId());
+        stmt.execute();
     }
 }

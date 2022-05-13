@@ -80,6 +80,9 @@ public class MarketManager extends AbstractRepository{
         stmt.setDate(2, java.sql.Date.valueOf(TickManager.getInstance().getDate()));
         stmt.setInt(3, c.getValue());
         stmt.execute();
+
+        // Si l'ajout se passe bien, on enregistre parmi les observers
+        TickManager.getInstance().addObserver(c);
     }
 
     @Override
