@@ -23,10 +23,11 @@ public class MarketManager extends AbstractRepository{
                 "" +
                 "CREATE TABLE \"crypto\" (\n" +
                 "    crypto_id serial PRIMARY KEY,\n" +
-                "    crypto_name varchar(255) UNIQUE,\n" +
-                "    crypto_slug varchar(255) UNIQUE,\n" +
+                "    crypto_name varchar(255),\n" +
+                "    crypto_slug varchar(255),\n" +
                 "    crypto_desc text,\n" +
-                "    crypto_seed INT UNIQUE\n" +
+                "    crypto_seed INT,\n" +
+                "    crypto_seed_cursor INT\n" +
                 ");" +
                 "" +
                 "" +

@@ -2,15 +2,12 @@ package com.crypto.cryptosim;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
+import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
 import java.time.LocalDate;
 import java.time.Period;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
-import java.util.Date;
-import java.util.GregorianCalendar;
 import java.util.Locale;
 import java.time.temporal.*;
 
@@ -96,6 +93,7 @@ public class TickManager {
 
     public static TemporalAmount tick = Period.ofDays(1);
     private LocalDate date = null;
+    private ArrayList<ValuableCrypto> observers;
 
     public LocalDate getDate() {
         return date;
@@ -103,5 +101,28 @@ public class TickManager {
 
     public TickManager()  {
         date = fromString("01-Jan-2000");
+    }
+
+    public void addObserver(ValuableCrypto c){
+        observers.add(c);
+    }
+
+    public void removeObserver(ValuableCrypto c){
+        observers.remove(c);
+    }
+
+
+    /**
+     * Utilisé par l'algorithme
+     * @param c
+     * @return
+     */
+    public int getSeedCryptoCursor(ValuableCrypto c) throws SQLException {
+        PreparedStatement stmt = getConnection().prepareStatement("SELECT crypto_seed_cursor FROM \"crypto\" WHERE crypto_id=?");
+        stmt.setInt(1, c.getId());
+        ResultSet rs = stmt.executeQuery();
+        if(!rs.next())
+            return -1;
+        return rs.getInt("crypto_seed_cursor");
     }
 }

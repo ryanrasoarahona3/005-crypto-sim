@@ -21,6 +21,15 @@ public class ValuableCrypto extends Crypto{
     }
 
     /**
+     * L'organisation des packages est encore un peu flou
+     * Ici, la fonction update est appelé par un observable
+     * @param value
+     */
+    public void update(int value){
+        setValue(value);
+    }
+
+    /**
      * Cette fonction ne peut être appelé qu'une seule fois lors de la création du crypto
      * Sinon, une erreur sera levée
      *

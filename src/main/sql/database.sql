@@ -15,7 +15,8 @@ CREATE TABLE "crypto" (
     crypto_name varchar(255),
     crypto_slug varchar(255),
     crypto_desc text,
-    crypto_seed INT
+    crypto_seed INT,
+    crypto_seed_cursor INT
 );
 
 -- PERMET DE DÉFINIR LA VALEUR D'UN CRYPTO À UN INSTANT DONNÉ
